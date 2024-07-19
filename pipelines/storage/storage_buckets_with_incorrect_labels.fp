@@ -121,10 +121,13 @@ locals {
             replace(
               replace(
                 replace(
-                  local.labels_query_template,
-                  "__TITLE__", "coalesce(name, title)"
+                  replace(
+                    local.labels_query_template,
+                    "__TITLE__", "coalesce(name, title)"
+                  ),
+                  "__TABLE_NAME__", "gcp_storage_bucket"
                 ),
-                "__TABLE_NAME__", "gcp_storage_bucket"
+                "__ID__", "id"
               ),
               "__ZONE__", "''"
             ),

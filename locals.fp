@@ -50,7 +50,7 @@ locals {
 with original_labels as (
   select
     __TITLE__ as title,
-    id,
+    __ID__ as id,
     project,
     sp_connection_name as cred,
     __ZONE__ as zone,
@@ -74,7 +74,6 @@ __UPDATE_KEYS_OVERRIDE__
     value
   from
     original_labels
-
 ),
 required_labels as (
   select
@@ -83,7 +82,7 @@ required_labels as (
     a.key as new_key,
     a.value
   from
-    (select distinct id from __TABLE_NAME__) r
+    (select distinct __ID__ as id from __TABLE_NAME__) r
   cross join (
     values
 __ADD_OVERRIDE__
