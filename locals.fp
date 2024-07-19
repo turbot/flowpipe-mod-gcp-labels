@@ -145,7 +145,7 @@ __UPDATE_VALUES_OVERRIDE__
 select * from (
   select
     l.title,
-    l.id,
+    l.id::text,
     l.project,
     l.zone,
     l.cred,

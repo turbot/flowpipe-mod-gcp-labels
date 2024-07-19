@@ -15,7 +15,7 @@ mod "gcp_labels" {
       version = "*"
     }
     mod "github.com/turbot/flowpipe-mod-gcp" {
-      version = "v0.3.0-rc.0"
+      version = "v0.3.0-rc.3"
     }
   }
 }
