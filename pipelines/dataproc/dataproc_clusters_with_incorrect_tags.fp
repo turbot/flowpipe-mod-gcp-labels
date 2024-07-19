@@ -121,12 +121,15 @@ locals {
             replace(
               replace(
                 replace(
-                  local.labels_query_template,
-                  "__TITLE__", "title"
+                  replace(
+                    local.labels_query_template,
+                    "__TITLE__", "title"
+                  ),
+                  "__TABLE_NAME__", "gcp_dataproc_cluster"
                 ),
-                "__TABLE_NAME__", "gcp_dataproc_cluster"
+                "__ID__", "cluster_name"
               ),
-              "__ZONE__", "zone"
+              "__ZONE__", "location"
             ),
             "__UPDATE_KEYS_OVERRIDE__", local.dataproc_clusters_update_keys_override
           ),
