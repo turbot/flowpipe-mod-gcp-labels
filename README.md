@@ -71,7 +71,7 @@ vi labels.fpvars
 
 Whilst most [variables](https://hub.flowpipe.io/mods/turbot/gcp_labels/variables) are set with sensible defaults, you will need to specify your own labelging rules either as a [base ruleset](#configuring-label-rules), [resource-specific ruleset](#resource-specific-label-rules) or a combination of both.
 
-### Configuring Tag Rules
+### Configuring Label Rules
 
 The `base_label_rules` variable is an object defined as below. It allows you to specify how labels should be managed on your resources. Let's break down each attribute and how you can configure it for specific use cases.
 
@@ -150,7 +150,7 @@ base_label_rules = {
 
 Any labels which do not match one of the above patterns will be removed from the resources.
 
-#### Update Keys: Ensuring Tag Keys Are Standardized
+#### Update Keys: Ensuring Label Keys Are Standardized
 
 Over time your labelging standards may change, or you may have variants of the same label that you wish to standardize. You can use the `update_keys` attribute to reconcile labels to a standardized set.
 
@@ -167,7 +167,7 @@ base_label_rules = {
 
 Behind the scenes, this works by creating a new label with the value of existing matched label and then removing the existing matched label.
 
-#### Update Values: Ensuring Tag Values Are Standardized
+#### Update Values: Ensuring Label Values Are Standardized
 
 Just like keys, you may want to standardize the values over time or correct common typos. You can use the `update_values` attribute to reconcile values to expected standards.
 
@@ -232,7 +232,7 @@ In this configuration:
 
 This approach ensures that all your label values are consistently updated, even when new or unexpected values are encountered.
 
-#### Complete Tag Rules
+#### Complete Label Rules
 
 Now that you understand each of the attributes available in the `base_label_rules` object individually, you can combine them to create a complex ruleset for managing your resource labels. By leveraging multiple attributes together you can achieve sophisticated labelging strategies.
 
@@ -292,7 +292,7 @@ This ensures that:
 - Thirdly, any labels that are no longer required are removed.
 - Finally, the values are updated as required.
 
-#### Resource-Specific Tag Rules
+#### Resource-Specific Label Rules
 
 You have three options for defining label rules:
 
@@ -446,22 +446,41 @@ flowpipe pipeline run detect_and_correct_storage_buckets_with_incorrect_labels -
 ```
 
 This will then run the pipeline and depending on your configured running mode; perform the relevant action(s), there are 3 running modes:
-- Notify Only
-- Automatic
 - Wizard
+- Notify
+- Automatic
 
-#### Notify Only
-This is the default `out-of-the-box` behavior, requiring no additional configuration. 
+#### Wizard
+This is the `default` running mode, allowing for a hands-on approach to approving changes to resource labels by prompting for [input](https://flowpipe.io/docs/build/input) for each resource detected violating the provided ruleset.
 
-As the name implies, this mode is designed to send a message on your configured [notifier](https://flowpipe.io/docs/reference/config-files/notifier) for each resource that violated a labelging rule along with the suggested remedial action.
+Whilst the out of the box default is to run the workflow directly in the terminal. You can use Flowpipe [server](https://flowpipe.io/docs/run/server) and [external integrations](https://flowpipe.io/docs/build/input) to prompt in `http`, `slack`, `teams`, etc.
 
-#### Automatic
-This behavior allows for a hands-off approach to remediating (or ignoring) your labelging ruleset violations.
+#### Notify
+This mode as the name implies is used purely to report detections via notifications either directly to your terminal when running in client mode or via another configured [notifier](https://flowpipe.io/docs/reference/config-files/notifier) when running in server mode for each resource that violated a labeling rule along with the suggested remedial action.
 
-To run in automatic mode, you can either change the `incorrect_labels_default_action` variable from `notify` to either `skip` or `apply` in your fpvars file
+To run in `notify` mode, you will need to set the `approvers` variable to an empty list `[]` and ensure the`incorrect_labels_default_action` variable is set to `notify`, either in your fpvars file
 
 ```hcl
 # labels.fpvars
+approvers = []
+incorrect_labels_default_action = "notify"
+base_label_rules = ... # omitted for brevity
+```
+
+or pass the `approvers` and `default_action` arguments on the command-line.
+
+```sh
+flowpipe pipeline run detect_and_correct_storage_buckets_with_incorrect_labels --var-file labels.fpvars --arg='default_action=notify' --arg='approvers=[]'
+```
+
+#### Automatic
+This behavior allows for a hands-off approach to remediating (or ignoring) your ruleset violations.
+
+To run in `automatic` mode, you will need to set the `approvers` variable to an empty list `[]` and the `incorrect_labels_default_action` variable to either `skip` or `apply` in your fpvars file
+
+```hcl
+# labels.fpvars
+approvers = []
 incorrect_labels_default_action = "apply"
 base_label_rules = ... # omitted for brevity
 ```
@@ -472,33 +491,7 @@ or pass the `default_action` argument on the command-line.
 flowpipe pipeline run detect_and_correct_storage_buckets_with_incorrect_labels --var-file labels.fpvars --arg='default_action=apply'
 ```
 
-Valid values are:
-- `notify`: This is the default value and is actually [notify only](#notify-only) mode.
-- `skip`: This will ignore any detections and not perform any other remediative action.
-- `apply`: This will automatically apply the remediative actions to your resources.
-
 To further enhance this approach, you can enable the pipelines corresponding [query trigger](#running-query-triggers) to run completely hands-off.
-
-#### Wizard
-If you prefer a more hands-on approach to approving changes to your resources labels, you can run in wizard mode, which will prompt you for input on each resource detected that violates your ruleset.
-
-To run in wizard mode, you can either set the `approvers` variable in your `fpvars` file
-
-```hcl
-# labels.fpvars
-approvers = ["default"]
-base_label_rules = ... # omitted for brevity
-```
-
-or pass the `approvers` argument on the command-line.
-
-```sh
-flowpipe pipeline run detect_and_correct_storage_buckets_with_incorrect_labels --var-file labels.fpvars --arg='approvers=["default"]'
-```
-
-This will run the pipeline locally, prompting you directly in the terminal to select the action for each detected resource.
-
-You can combine this approch using Flowpipe [server](https://flowpipe.io/docs/run/server) and [external integrations](https://flowpipe.io/docs/build/input) to prompt in `http`, `slack`, `teams`, etc.
 
 ### Running Query Triggers
 
