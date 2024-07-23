@@ -1,7 +1,7 @@
 mod "gcp_labels" {
   title         = "GCP Labels"
   description   = "Run pipelines to detect and correct GCP labels which are missing, prohibited or otherwise unexpected."
-  color         = "#FF9900"
+  color         = "#ea4335"
   documentation = file("./README.md")
   icon          = "/images/mods/turbot/gcp-labels.svg"
   categories    = ["gcp", "labels", "public cloud"]
