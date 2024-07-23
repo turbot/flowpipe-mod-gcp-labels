@@ -62,11 +62,11 @@ flowpipe mod install
 
 To start using this mod, you may need to configure some [input variables](https://flowpipe.io/docs/build/mod-variables#input-variables).
 
-The simplest way to do this is to copy the example file `labels.fpvars.example` to `labels.fpvars`, and then update the values as needed. Alternatively, you can pass the variables directly via the command line or environment variables. For more details on these methods, see [passing input variables](https://flowpipe.io/docs/build/mod-variables#passing-input-variables).
+The simplest way to do this is to copy the example file `flowipe.fpvars.example` to `flowipe.fpvars`, and then update the values as needed. Alternatively, you can pass the variables directly via the command line or environment variables. For more details on these methods, see [passing input variables](https://flowpipe.io/docs/build/mod-variables#passing-input-variables).
 
 ```sh
-cp labels.fpvars.example labels.fpvars
-vi labels.fpvars
+cp flowipe.fpvars.example flowipe.fpvars
+vi flowipe.fpvars
 ```
 
 Whilst most [variables](https://hub.flowpipe.io/mods/turbot/gcp_labels/variables) are set with sensible defaults, you will need to specify your own labelging rules either as a [base ruleset](#configuring-label-rules), [resource-specific ruleset](#resource-specific-label-rules) or a combination of both.
@@ -118,7 +118,7 @@ base_label_rules = {
 
 However, the above will only cater to exact matches on those strings. This means we may miss labels like `Password` or `ssh_key` as these labels are in a different casing or contain extraneous characters. To achieve better matching we can use patterns along with [supported operators](#supported-operators) in the format `operator:pattern`.
 
-This would allow us to write rules which match more realistic cirumstances and remove labels that contain `password`, begin with `secret`, or end with `key` regardless of the casing.
+This would allow us to write rules which match more realistic circumstances and remove labels that contain `password`, begin with `secret`, or end with `key` regardless of the casing.
 
 ```hcl
 base_label_rules = {
@@ -442,7 +442,7 @@ flowpipe pipeline list | grep "detect_and_correct"
 
 Then run your chosen pipeline, for example if we wish to remediate labels on our `storage buckets`:
 ```sh
-flowpipe pipeline run detect_and_correct_storage_buckets_with_incorrect_labels --var-file labels.fpvars
+flowpipe pipeline run detect_and_correct_storage_buckets_with_incorrect_labels --var-file flowipe.fpvars
 ```
 
 This will then run the pipeline and depending on your configured running mode; perform the relevant action(s), there are 3 running modes:
@@ -461,7 +461,7 @@ This mode as the name implies is used purely to report detections via notificati
 To run in `notify` mode, you will need to set the `approvers` variable to an empty list `[]` and ensure the`incorrect_labels_default_action` variable is set to `notify`, either in your fpvars file
 
 ```hcl
-# labels.fpvars
+# flowipe.fpvars
 approvers = []
 incorrect_labels_default_action = "notify"
 base_label_rules = ... # omitted for brevity
@@ -470,7 +470,7 @@ base_label_rules = ... # omitted for brevity
 or pass the `approvers` and `default_action` arguments on the command-line.
 
 ```sh
-flowpipe pipeline run detect_and_correct_storage_buckets_with_incorrect_labels --var-file labels.fpvars --arg='default_action=notify' --arg='approvers=[]'
+flowpipe pipeline run detect_and_correct_storage_buckets_with_incorrect_labels --var-file flowipe.fpvars --arg='default_action=notify' --arg='approvers=[]'
 ```
 
 #### Automatic
@@ -479,7 +479,7 @@ This behavior allows for a hands-off approach to remediating (or ignoring) your 
 To run in `automatic` mode, you will need to set the `approvers` variable to an empty list `[]` and the `incorrect_labels_default_action` variable to either `skip` or `apply` in your fpvars file
 
 ```hcl
-# labels.fpvars
+# flowipe.fpvars
 approvers = []
 incorrect_labels_default_action = "apply"
 base_label_rules = ... # omitted for brevity
@@ -488,7 +488,7 @@ base_label_rules = ... # omitted for brevity
 or pass the `default_action` argument on the command-line.
 
 ```sh
-flowpipe pipeline run detect_and_correct_storage_buckets_with_incorrect_labels --var-file labels.fpvars --arg='default_action=apply'
+flowpipe pipeline run detect_and_correct_storage_buckets_with_incorrect_labels --var-file flowipe.fpvars --arg='default_action=apply'
 ```
 
 To further enhance this approach, you can enable the pipelines corresponding [query trigger](#running-query-triggers) to run completely hands-off.
@@ -501,10 +501,10 @@ Each `detect_and_correct` pipeline comes with a corresponding [Query Trigger](ht
 
 Let's begin by looking at how to set-up a Query Trigger to automatically resolve labelging violations with our storage buckets.
 
-Firsty, we need to update our `labels.fpvars` file to add or update the following variables - if we want to run our remediation `hourly` and automatically `apply` the corrections:
+Firsty, we need to update our `flowipe.fpvars` file to add or update the following variables - if we want to run our remediation `hourly` and automatically `apply` the corrections:
 
 ```hcl
-# labels.fpvars
+# flowipe.fpvars
 
 storage_buckets_with_incorrect_labels_trigger_enabled  = true
 storage_buckets_with_incorrect_labels_trigger_schedule = "1h"
@@ -516,7 +516,7 @@ base_label_rules = ... # omitted for brevity
 Now we'll need to start up our Flowpipe server:
 
 ```sh
-flowpipe server --var-file=labels.fpvars
+flowpipe server --var-file=flowipe.fpvars
 ```
 
 This will activate every hour and detect storage buckets with labelging violations and apply the corrections without further interaction!
