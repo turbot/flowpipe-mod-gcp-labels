@@ -1,6 +1,6 @@
 pipeline "correct_resources_with_incorrect_labels" {
   title       = "Correct resources with incorrect labels"
-  description = "" // TODO: Add description
+  description = "Corrects resources with incorrect labels."
 
   param "items" {
     type        = list(object({
@@ -67,7 +67,7 @@ pipeline "correct_resources_with_incorrect_labels" {
 
 pipeline "correct_one_resource_with_incorrect_labels" {
   title       = "Correct one resource with incorrect labels"
-  description = "" // TODO: Add description
+  description = "Corrects a single resource with incorrect labels."
 
   param "title" {
     type        = string

@@ -44,6 +44,8 @@ locals {
 }
 
 pipeline "add_and_remove_resource_labels" {
+  title       = "Add and remove resource labels"
+  description = "Add and remove labels from a resource."
 
   param "id" {
     type        = string
