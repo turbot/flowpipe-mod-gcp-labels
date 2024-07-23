@@ -1,14 +1,48 @@
 # Core options
-# database           = "postgres:#steampipe@localhost:9193/steampipe"
-# notifier           = "default"
-# notification_level = "info"
-# approvers          = []
-# max_concurrency    = 1
+database           = "postgres:#steampipe@localhost:9193/steampipe"
+notifier           = "default"
+notification_level = "info"
+approvers          = []
+max_concurrency    = 1
 
-# base_label_rules = {
-#  add           = {}
-#  remove        = []
-#  remove_except = []
-#  update_keys   = {}
-#  update_values = {}
-# }
+incorrect_labels_default_action = "notify"
+
+base_label_rules = {
+ add           = {}
+ remove        = []
+ remove_except = []
+ update_keys   = {}
+ update_values = {}
+}
+
+# compute_disks_label_rules = {}
+# compute_disks_with_incorrect_labels_trigger_enabled = false
+# compute_disks_with_incorrect_labels_trigger_schedule = "15m"
+
+# compute_images_label_rules = {}
+# compute_images_with_incorrect_labels_trigger_enabled = false
+# compute_images_with_incorrect_labels_trigger_schedule = "15m"
+
+# compute_instances_label_rules = {}
+# compute_instances_with_incorrect_labels_trigger_enabled = false
+# compute_instances_with_incorrect_labels_trigger_schedule = "15m"
+
+# compute_snapshots_label_rules = {}
+# compute_snapshots_with_incorrect_labels_trigger_enabled = false
+# compute_snapshots_with_incorrect_labels_trigger_schedule = "15m"
+
+# dataproc_clusters_label_rules = {}
+# dataproc_clusters_with_incorrect_labels_trigger_enabled = false
+# dataproc_clusters_with_incorrect_labels_trigger_schedule = "15m"
+
+# pubsub_subscriptions_label_rules = {}
+# pubsub_subscriptions_with_incorrect_labels_trigger_enabled = false
+# pubsub_subscriptions_with_incorrect_labels_trigger_schedule = "15m"
+
+# pubsub_topics_label_rules = {}
+# pubsub_topics_with_incorrect_labels_trigger_enabled = false
+# pubsub_topics_with_incorrect_labels_trigger_schedule = "15m"
+
+# storage_buckets_label_rules = {}
+# storage_buckets_with_incorrect_labels_trigger_enabled = false
+# storage_buckets_with_incorrect_labels_trigger_schedule = "15m"
