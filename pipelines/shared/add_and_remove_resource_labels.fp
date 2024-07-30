@@ -50,6 +50,11 @@ locals {
       remove = gcp.pipeline.remove_labels_from_redis_instance
       config = {id_key = "instance_name", pass_zone = true}
     }
+    gcp_compute_ha_vpn_gateway = {
+      add    = gcp.pipeline.add_labels_to_vpn_gateway
+      remove = gcp.pipeline.remove_labels_from_vpn_gateway
+      config = {id_key = "gateway_name", pass_zone = true}
+    }
   }
 }
 
