@@ -39,7 +39,17 @@ locals {
       add    = gcp.pipeline.add_labels_to_pubsub_topic
       remove = gcp.pipeline.remove_specific_label_from_pubsub_topic
       config = {id_key = "topic_name", pass_zone = false}
-    }  
+    }
+    gcp_secret_manager_secret = {
+      add    = gcp.pipeline.add_labels_to_secret_manager_secret
+      remove = gcp.pipeline.remove_specific_labels_from_secret_manager_secret
+      config = {id_key = "secret_name", pass_zone = false}
+    } 
+    gcp_redis_instance = {
+      add    = gcp.pipeline.add_labels_to_redis_instance
+      remove = gcp.pipeline.remove_labels_from_redis_instance
+      config = {id_key = "instance_name", pass_zone = true}
+    }
   }
 }
 
