@@ -127,9 +127,9 @@ locals {
                   ),
                   "__TABLE_NAME__", "gcp_kubernetes_cluster"
                 ),
-                "__ID__", "id"
+                "__ID__", "name"
               ),
-              "__ZONE__", "''"
+              "__ZONE__", "location"
             ),
             "__UPDATE_KEYS_OVERRIDE__", local.kubernetes_clusters_update_keys_override
           ),

@@ -127,9 +127,9 @@ locals {
                   ),
                   "__TABLE_NAME__", "gcp_compute_forwarding_rule"
                 ),
-                "__ID__", "id"
+                "__ID__", "name"
               ),
-              "__ZONE__", "zone"
+              "__ZONE__", "location"
             ),
             "__UPDATE_KEYS_OVERRIDE__", local.compute_forwarding_rules_update_keys_override
           ),

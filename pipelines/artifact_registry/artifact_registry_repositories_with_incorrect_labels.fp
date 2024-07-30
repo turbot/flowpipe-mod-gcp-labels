@@ -12,7 +12,7 @@ trigger "query" "detect_and_correct_artifact_registry_repositories_with_incorrec
     pipeline = pipeline.correct_resources_with_incorrect_labels
     args = {
       items         = self.inserted_rows
-      resource_type = "gcp_compute_disk"
+      resource_type = "gcp_artifact_registry_repository"
     }
   }
 }
@@ -61,7 +61,7 @@ pipeline "detect_and_correct_artifact_registry_repositories_with_incorrect_label
     pipeline = pipeline.correct_resources_with_incorrect_labels
     args = {
       items              = step.query.detect.rows
-      resource_type      = "gcp_compute_disk"
+      resource_type      = "gcp_artifact_registry_repository"
       notifier           = param.notifier
       notification_level = param.notification_level
       approvers          = param.approvers
@@ -125,11 +125,11 @@ locals {
                     local.labels_query_template,
                     "__TITLE__", "coalesce(name, title)"
                   ),
-                  "__TABLE_NAME__", "gcp_compute_disk"
+                  "__TABLE_NAME__", "gcp_artifact_registry_repository"
                 ),
-                "__ID__", "id"
+                "__ID__", "name"
               ),
-              "__ZONE__", "zone"
+              "__ZONE__", "location"
             ),
             "__UPDATE_KEYS_OVERRIDE__", local.artifact_registry_repositories_update_keys_override
           ),
