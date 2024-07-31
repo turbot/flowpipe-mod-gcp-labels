@@ -39,7 +39,12 @@ locals {
       add    = gcp.pipeline.add_labels_to_pubsub_topic
       remove = gcp.pipeline.remove_specific_label_from_pubsub_topic
       config = {id_key = "topic_name", pass_zone = false}
-    }  
+    }
+    gcp_sql_database_instance = {
+      add    = gcp.pipeline.add_labels_to_sql_instance
+      remove = gcp.pipeline.remove_labels_from_sql_instance
+      config = {id_key = "instance_name", pass_zone = false}
+    } 
   }
 }
 
