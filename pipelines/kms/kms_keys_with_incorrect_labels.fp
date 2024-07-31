@@ -1,6 +1,6 @@
 trigger "query" "detect_and_correct_kms_keys_with_incorrect_labels" {
-  title         = "Detect & correct Storage buckets with incorrect labels"
-  description   = "Detects Storage buckets with incorrect labels and optionally attempts to correct them."
+  title         = "Detect & correct KMS keys with incorrect labels"
+  description   = "Detects KMS keys with incorrect labels and optionally attempts to correct them."
   tags          = local.storage_common_tags
 
   enabled  = var.kms_keys_with_incorrect_labels_trigger_enabled
@@ -18,8 +18,8 @@ trigger "query" "detect_and_correct_kms_keys_with_incorrect_labels" {
 }
 
 pipeline "detect_and_correct_kms_keys_with_incorrect_labels" {
-  title         = "Detect & correct Storage buckets with incorrect labels"
-  description   = "Detects Storage buckets with incorrect labels and optionally attempts to correct them."
+  title         = "Detect & correct KMS keys with incorrect labels"
+  description   = "Detects KMS keys with incorrect labels and optionally attempts to correct them."
   tags          = merge(local.storage_common_tags, { type = "featured" })
 
   param "database" {
