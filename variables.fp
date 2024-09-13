@@ -2,6 +2,10 @@ variable "database" {
   type        = string
   description = "Steampipe database connection string."
   default     = "postgres://steampipe@localhost:9193/steampipe"
+
+  tags        = {
+    folder = "Advanced/Global"
+  }
 }
 
 variable "notifier" {
@@ -26,6 +30,10 @@ variable "max_concurrency" {
   type        = number
   description = "The maximum concurrency to use for responding to detection items."
   default     = 1
+
+  tags        = {
+    folder = "Advanced/Global"
+  }
 }
 
 variable "incorrect_labels_default_action" {
