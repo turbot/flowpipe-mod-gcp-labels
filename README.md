@@ -29,20 +29,20 @@ steampipe plugin install gcp
 
 Steampipe will automatically use your default GCP credentials. Optionally, you can [setup multiple subscriptions](https://hub.steampipe.io/plugins/turbot/gcp#multi-subscription-connections) or [configure specific GCP credentials](https://hub.steampipe.io/plugins/turbot/gcp#configuring-gcp-credentials).
 
-Create a [`credential_import`](https://flowpipe.io/docs/reference/config-files/credential_import) resource to import your Steampipe GCP connections:
+Create a [`connection_import`](https://flowpipe.io/docs/reference/config-files/connection_import) resource to import your Steampipe GCP connections:
 
 ```sh
 vi ~/.flowpipe/config/gcp.fpc
 ```
 
 ```hcl
-credential_import "gcp" {
+connection_import "gcp" {
   source      = "~/.steampipe/config/gcp.spc"
   connections = ["*"]
 }
 ```
 
-For more information on credentials in Flowpipe, please see [Managing Credentials](https://flowpipe.io/docs/run/credentials).
+For more information on connections in Flowpipe, please see [Managing Connections](https://flowpipe.io/docs/run/connections).
 
 Clone the mod:
 
