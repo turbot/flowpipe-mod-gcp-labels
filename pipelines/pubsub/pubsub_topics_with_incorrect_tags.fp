@@ -20,16 +20,16 @@ trigger "query" "detect_and_correct_pubsub_topics_with_incorrect_labels" {
 pipeline "detect_and_correct_pubsub_topics_with_incorrect_labels" {
   title       = "Detect & correct Pub/Sub topics with incorrect labels"
   description = "Detects Pub/Sub topics with incorrect labels and optionally attempts to correct them."
-  tags        = merge(local.pubsub_common_tags, { type = "recommended" })
+  tags        = merge(local.pubsub_common_tags, { recommended = "true" })
 
   param "database" {
-    type        = string
+    type        = connection.steampipe
     description = local.description_database
     default     = var.database
   }
 
   param "notifier" {
-    type        = string
+    type        = notifier
     description = local.description_notifier
     default     = var.notifier
   }
@@ -41,7 +41,7 @@ pipeline "detect_and_correct_pubsub_topics_with_incorrect_labels" {
   }
 
   param "approvers" {
-    type        = list(string)
+    type        = list(notifier)
     description = local.description_approvers
     default     = var.approvers
   }

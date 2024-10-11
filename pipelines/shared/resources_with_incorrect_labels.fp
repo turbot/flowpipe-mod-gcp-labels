@@ -8,7 +8,7 @@ pipeline "correct_resources_with_incorrect_labels" {
       id      = string
       project = string
       zone    = string
-      cred    = string
+      conn    = string
       remove  = list(string)
       upsert  = map(string)
     }))
@@ -21,7 +21,7 @@ pipeline "correct_resources_with_incorrect_labels" {
   }
 
   param "notifier" {
-    type        = string
+    type        = notifier
     description = local.description_notifier
     default     = var.notifier
   }
@@ -33,7 +33,7 @@ pipeline "correct_resources_with_incorrect_labels" {
   }
 
   param "approvers" {
-    type        = list(string)
+    type        = list(notifier)
     description = local.description_approvers
     default     = var.approvers
   }
@@ -53,7 +53,7 @@ pipeline "correct_resources_with_incorrect_labels" {
       id                 = each.value.id
       zone               = each.value.zone
       project            = each.value.project
-      cred               = each.value.cred
+      conn               = connection.gcp[each.value.conn]
       remove             = each.value.remove
       upsert             = each.value.upsert
       resource_type      = param.resource_type
@@ -89,9 +89,9 @@ pipeline "correct_one_resource_with_incorrect_labels" {
     description = "The project of the resource."
   }
 
-  param "cred" {
-    type        = string
-    description = "The credential to use when attempting to correct the resource."
+  param "conn" {
+    type        = connection.gcp
+    description = local.description_connection
   }
 
   param "remove" {
@@ -110,7 +110,7 @@ pipeline "correct_one_resource_with_incorrect_labels" {
   }
 
   param "notifier" {
-    type        = string
+    type        = notifier
     description = local.description_notifier
     default     = var.notifier
   }
@@ -122,7 +122,7 @@ pipeline "correct_one_resource_with_incorrect_labels" {
   }
 
   param "approvers" {
-    type        = list(string)
+    type        = list(notifier)
     description = local.description_approvers
     default     = var.approvers
   }
@@ -174,7 +174,7 @@ pipeline "correct_one_resource_with_incorrect_labels" {
           style        = local.style_ok
           pipeline_ref = pipeline.add_and_remove_resource_labels
           pipeline_args = {
-            cred    = param.cred 
+            conn    = param.conn
             zone    = param.zone
             id      = param.id
             project = param.project
