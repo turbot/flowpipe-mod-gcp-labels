@@ -4,7 +4,7 @@ mod "gcp_labels" {
   color         = "#ea4335"
   documentation = file("./README.md")
   icon          = "/images/mods/turbot/gcp-labels.svg"
-  categories    = ["gcp", "labels", "public cloud"]
+  categories    = ["gcp", "public cloud", "standard", "tags"]
   opengraph {
     title       = "GCP Labels Mod for Flowpipe"
     description = "Run pipelines to detect and correct GCP labels which are missing, prohibited or otherwise unexpected."
