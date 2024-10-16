@@ -30,11 +30,6 @@ locals {
   description_trigger_schedule = "The schedule on which to run the trigger if enabled."
 }
 
-// Pipeline References
-locals {
-  pipeline_optional_message    = detect_correct.pipeline.optional_message
-}
-
 locals {
   base_label_rules = {
     add           = try(var.base_label_rules.add, {})
