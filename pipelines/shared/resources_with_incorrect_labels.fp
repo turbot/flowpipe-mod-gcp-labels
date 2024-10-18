@@ -3,7 +3,7 @@ pipeline "correct_resources_with_incorrect_labels" {
   description = "Corrects resources with incorrect labels."
 
   param "items" {
-    type        = list(object({
+    type = list(object({
       title   = string
       id      = string
       project = string
@@ -42,6 +42,7 @@ pipeline "correct_resources_with_incorrect_labels" {
     type        = string
     description = local.description_default_action
     default     = var.incorrect_labels_default_action
+    enum        = local.incorrect_labels_default_action_enum
   }
 
   step "pipeline" "correct_one" {
@@ -131,6 +132,7 @@ pipeline "correct_one_resource_with_incorrect_labels" {
     type        = string
     description = local.description_default_action
     default     = var.incorrect_labels_default_action
+    enum        = local.incorrect_labels_default_action_enum
   }
 
   step "transform" "remove_keys_display" {
@@ -168,7 +170,7 @@ pipeline "correct_one_resource_with_incorrect_labels" {
           success_msg = ""
           error_msg   = ""
         }
-       "apply" = {
+        "apply" = {
           label        = "Apply"
           value        = "apply"
           style        = local.style_ok

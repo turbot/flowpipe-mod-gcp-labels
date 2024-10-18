@@ -41,7 +41,11 @@ locals {
 }
 
 locals {
-  operators = ["~", "~*", "like", "ilike", "="]
+  incorrect_labels_default_action_enum = ["notify", "apply", "skip"]
+}
+
+locals {
+  operators             = ["~", "~*", "like", "ilike", "="]
   labels_query_template = <<-EOF
 with original_labels as (
   select

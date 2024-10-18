@@ -50,6 +50,7 @@ pipeline "detect_and_correct_compute_images_with_incorrect_labels" {
     type        = string
     description = local.description_default_action
     default     = var.incorrect_labels_default_action
+    enum        = local.incorrect_labels_default_action_enum
   }
 
   step "query" "detect" {
