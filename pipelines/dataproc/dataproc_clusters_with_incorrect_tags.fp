@@ -38,6 +38,7 @@ pipeline "detect_and_correct_dataproc_clusters_with_incorrect_labels" {
     type        = string
     description = local.description_notifier_level
     default     = var.notification_level
+    enum        = local.notification_level_enum
   }
 
   param "approvers" {

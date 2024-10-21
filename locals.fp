@@ -6,6 +6,12 @@ locals {
   }
 }
 
+// Notification level
+
+locals {
+  notification_level_enum = ["info", "verbose", "error"]
+}
+
 // Consts
 locals {
   level_verbose = "verbose"

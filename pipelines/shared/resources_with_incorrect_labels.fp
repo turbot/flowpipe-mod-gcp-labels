@@ -30,6 +30,7 @@ pipeline "correct_resources_with_incorrect_labels" {
     type        = string
     description = local.description_notifier_level
     default     = var.notification_level
+    enum        = local.notification_level_enum
   }
 
   param "approvers" {
@@ -120,6 +121,7 @@ pipeline "correct_one_resource_with_incorrect_labels" {
     type        = string
     description = local.description_notifier_level
     default     = var.notification_level
+    enum        = local.notification_level_enum
   }
 
   param "approvers" {

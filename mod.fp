@@ -5,6 +5,7 @@ mod "gcp_labels" {
   documentation = file("./README.md")
   icon          = "/images/mods/turbot/gcp-labels.svg"
   categories    = ["gcp", "public cloud", "standard", "tags"]
+  database      = var.database
 
   opengraph {
     title       = "GCP Labels Mod for Flowpipe"
