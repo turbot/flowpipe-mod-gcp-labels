@@ -62,9 +62,9 @@ pipeline "add_and_remove_resource_labels" {
     description = "The project of the resource."
   }
 
-  param "cred" {
-    type        = string
-    description = "The credential to use when attempting to correct the resource."
+  param "conn" {
+    type        = connection.gcp
+    description = local.description_connection
   }
 
   param "type" {
@@ -93,7 +93,7 @@ pipeline "add_and_remove_resource_labels" {
     value = {
       pipeline = local.resource_specific_pipelines[param.type].add
       args     = merge({
-        cred        = param.cred
+        conn        = param.conn
         project_id  = param.project
         labels      = param.upsert
         "${local.resource_specific_pipelines[param.type].config.id_key}" = param.id
@@ -113,7 +113,7 @@ pipeline "add_and_remove_resource_labels" {
     value = {
       pipeline = local.resource_specific_pipelines[param.type].remove
       args     = merge({
-        cred        = param.cred
+        conn        = param.conn
         project_id  = param.project
         labels      = param.remove
         "${local.resource_specific_pipelines[param.type].config.id_key}" = param.id
