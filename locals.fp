@@ -6,6 +6,12 @@ locals {
   }
 }
 
+// Notification level
+
+locals {
+  notification_level_enum = ["info", "verbose", "error"]
+}
+
 // Consts
 locals {
   level_verbose = "verbose"
@@ -20,18 +26,14 @@ locals {
 locals {
   description_database         = "Database connection string."
   description_approvers        = "List of notifiers to be used for obtaining action/approval decisions."
+  description_connection       = "Name of the GCP connection to be used for any authenticated actions."
   description_max_concurrency  = "The maximum concurrency to use for responding to detection items."
   description_notifier         = "The name of the notifier to use for sending notification messages."
-  description_notifier_level   = "The verbosity level of notification messages to send. Valid options are 'verbose', 'info', 'error'."
+  description_notifier_level   = "The verbosity level of notification messages to send."
   description_default_action   = "The default action to use for the detected item, used if no input is provided."
   description_enabled_actions  = "The list of enabled actions to provide to approvers for selection."
   description_trigger_enabled  = "If true, the trigger is enabled."
   description_trigger_schedule = "The schedule on which to run the trigger if enabled."
-}
-
-// Pipeline References
-locals {
-  pipeline_optional_message    = detect_correct.pipeline.optional_message
 }
 
 locals {
@@ -45,14 +47,18 @@ locals {
 }
 
 locals {
-  operators = ["~", "~*", "like", "ilike", "="]
+  incorrect_labels_default_action_enum = ["notify", "apply", "skip"]
+}
+
+locals {
+  operators             = ["~", "~*", "like", "ilike", "="]
   labels_query_template = <<-EOF
 with original_labels as (
   select
     __TITLE__ as title,
     __ID__ as id,
     project,
-    sp_connection_name as cred,
+    sp_connection_name as conn,
     __ZONE__ as zone,
     coalesce(labels, '{}'::jsonb) as labels,
     l.key,
@@ -147,7 +153,7 @@ select * from (
     l.id::text,
     l.project,
     l.zone,
-    l.cred,
+    l.conn,
     coalesce((select jsonb_agg(key) from remove_labels rl where rl.id = l.id and key is not null), '[]'::jsonb) as remove,
     coalesce((select jsonb_object_agg(al.new_key, al.value) from all_labels al where al.id = l.id and al.new_key != coalesce(al.old_key, '') and not exists (
       select 1 from remove_labels rl where rl.id = al.id and rl.key = al.new_key
@@ -156,7 +162,7 @@ select * from (
     )), '{}'::jsonb) as upsert
   from
     original_labels l
-  group by l.title, l.id, l.project, l.zone, l.cred
+  group by l.title, l.id, l.project, l.zone, l.conn
 ) result
 where remove != '[]'::jsonb or upsert != '{}'::jsonb;
   EOF
