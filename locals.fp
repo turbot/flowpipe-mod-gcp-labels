@@ -29,7 +29,7 @@ locals {
   description_connection       = "Name of the GCP connection to be used for any authenticated actions."
   description_max_concurrency  = "The maximum concurrency to use for responding to detection items."
   description_notifier         = "The name of the notifier to use for sending notification messages."
-  description_notifier_level   = "The verbosity level of notification messages to send. Valid options are 'verbose', 'info', 'error'."
+  description_notifier_level   = "The verbosity level of notification messages to send."
   description_default_action   = "The default action to use for the detected item, used if no input is provided."
   description_enabled_actions  = "The list of enabled actions to provide to approvers for selection."
   description_trigger_enabled  = "If true, the trigger is enabled."
